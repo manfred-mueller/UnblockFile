@@ -3,8 +3,8 @@
 ![UnblockFile screenshot](Properties/screenshot.png?raw=true "UnblockFile screenshot")
 
 Usage:&ensp;UnblockFile {file or path}<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UnblockFile {register}<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UnblockFile {unregister}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&thinsp;UnblockFile {register}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&thinsp;UnblockFile {unregister}
 
 UnblockFile is a simple app to unblock files that have been downloaded from the Internet.
 It can be registered to the context menu of files or folders in the windows&trade; explorer&reg;.
