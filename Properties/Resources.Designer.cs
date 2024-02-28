@@ -179,9 +179,9 @@ namespace UnblockFile.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Usage:	unblock &lt;file_path&gt;
-        ///	unblock &lt;register&gt;
-        ///	unblock &lt;unregister&gt; ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Usage:	UnblockFile &lt;file or path&gt;
+        ///	UnblockFile &lt;register&gt;
+        ///	UnblockFile &lt;unregister&gt; ähnelt.
         /// </summary>
         internal static string UsageTunblockFile_pathNTunblockRegisterNTunblockUnregister {
             get {

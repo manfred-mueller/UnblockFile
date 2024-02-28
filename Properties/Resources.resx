@@ -158,8 +158,8 @@
     <value>Unblock files in folder</value>
   </data>
   <data name="UsageTunblockFile_pathNTunblockRegisterNTunblockUnregister" xml:space="preserve">
-    <value>Usage:	unblock &lt;file_path&gt;
-	unblock &lt;register&gt;
-	unblock &lt;unregister&gt;</value>
+    <value>Usage:	UnblockFile &lt;file or path&gt;
+	UnblockFile &lt;register&gt;
+	UnblockFile &lt;unregister&gt;</value>
   </data>
 </root>

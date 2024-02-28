@@ -123,9 +123,6 @@
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
   </data>
-  <data name="Error1" xml:space="preserve">
-    <value>Fehler</value>
-  </data>
   <data name="FailedToUnblockTheFile" xml:space="preserve">
     <value>Die Datei konnte nicht entsperrt werden.</value>
   </data>
@@ -157,8 +154,8 @@
     <value>Dateien im Ordner entsperren</value>
   </data>
   <data name="UsageTunblockFile_pathNTunblockRegisterNTunblockUnregister" xml:space="preserve">
-    <value>Aufruf:	unblock &lt;Datei_Pfad&gt;
-	unblock &lt;register&gt;
-	unblock &lt;unregister&gt;</value>
+    <value>Aufruf:	UnblockFile &lt;Datei oder Pfad&gt;
+	UnblockFile &lt;register&gt;
+	UnblockFile &lt;unregister&gt;</value>
   </data>
 </root>
