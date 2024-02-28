@@ -2,7 +2,7 @@
 
 ![UnblockFile screenshot](Properties/screenshot.png?raw=true "UnblockFile screenshot")
 
-Usage:&nbsp;UnblockFile {file or path}<br>
+Usage:&ensp;UnblockFile {file or path}<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UnblockFile {register}<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UnblockFile {unregister}
 
