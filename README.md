@@ -10,5 +10,5 @@ UnblockFile is a simple app to unblock files that have been downloaded from the 
 It can be registered to the context menu of files or folders in the windows&trade; explorer&reg;.<br>
 It has been written with the help of [ChatGPT](https://chat.openai.com)&trade;.
 
-All trademarks and product names used in this software are the properties of their respective owners
+All trademarks and product names used in this software are the properties of their respective owners<br>
 and are used solely for descriptive purposes.
