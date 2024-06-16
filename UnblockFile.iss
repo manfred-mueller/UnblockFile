@@ -3,7 +3,7 @@
 
 #define MyAppName "UnblockFile"
 #define MyAppVersion "1.0.0"
-#define MyAppExeName "UnBlock.exe"
+#define MyAppExeName "UnBlockFile.exe"
 #define MyAppPublisher "NASS e.K."
 #define MyAppURL "https://www.nass-ek.de"
 
@@ -45,6 +45,11 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 [Files]
 Source: "bin\Release\{#MyAppExeName}"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: confirmoverwrite
 
+[Registry]
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
+    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}"; \
+    Check: NeedsAddPath('{app}')
+    
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Parameters: "register"; Flags: runascurrentuser; Description: "Kontextmenu registrieren"; Languages: german
 
@@ -100,6 +105,23 @@ begin
 end;
 
 { ///////////////////////////////////////////////////////////////////// }
+function NeedsAddPath(Param: string): boolean;
+var
+  OrigPath: string;
+begin
+  if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
+    'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
+    'Path', OrigPath)
+  then begin
+    Result := True;
+    exit;
+  end;
+  { look for the path with leading and trailing semicolon }
+  { Pos() returns 0 if not found }
+  Result := Pos(';' + Param + ';', ';' + OrigPath + ';') = 0;
+end;
+
+{ ///////////////////////////////////////////////////////////////////// }
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if (CurStep=ssInstall) then
@@ -108,5 +130,53 @@ begin
     begin
       UnInstallOldVersion();
     end;
+  end;
+end;
+
+{ ///////////////////////////////////////////////////////////////////// }
+const
+  EnvironmentKey = 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
+
+procedure RemovePath(Path: string);
+var
+  Paths: string;
+  P: Integer;
+begin
+  if not RegQueryStringValue(HKLM, EnvironmentKey, 'Path', Paths) then
+  begin
+    Log('PATH not found');
+  end
+    else
+  begin
+    Log(Format('PATH is [%s]', [Paths]));
+
+    P := Pos(';' + Uppercase(Path) + ';', ';' + Uppercase(Paths) + ';');
+    if P = 0 then
+    begin
+      Log(Format('Path [%s] not found in PATH', [Path]));
+    end
+      else
+    begin
+      if P > 1 then P := P - 1;
+      Delete(Paths, P, Length(Path) + 1);
+      Log(Format('Path [%s] removed from PATH => [%s]', [Path, Paths]));
+
+      if RegWriteStringValue(HKLM, EnvironmentKey, 'Path', Paths) then
+      begin
+        Log('PATH written');
+      end
+        else
+      begin
+        Log('Error writing PATH');
+      end;
+    end;
+  end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usUninstall then
+  begin
+    RemovePath(ExpandConstant('{app}'));
   end;
 end;

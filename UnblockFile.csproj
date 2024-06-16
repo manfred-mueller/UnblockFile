@@ -8,7 +8,7 @@
     <ProjectGuid>{78894B78-912F-4B46-BD4F-E10750C2C617}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Unblock</RootNamespace>
-    <AssemblyName>Unblock</AssemblyName>
+    <AssemblyName>UnblockFile</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
