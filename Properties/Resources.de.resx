@@ -158,4 +158,13 @@
 	UnblockFile &lt;register&gt;
 	UnblockFile &lt;unregister&gt;</value>
   </data>
+  <data name="FileIsNotBlocked" xml:space="preserve">
+    <value>Datei ist nicht gesperrt</value>
+  </data>
+  <data name="InsufficientPermissions" xml:space="preserve">
+    <value>Unzureichende Rechte</value>
+  </data>
+  <data name="AllFilesHaveBeenSuccessfullyUnblocked" xml:space="preserve">
+    <value>Alle Dateien wurden erfolgreich entsperrt</value>
+  </data>
 </root>

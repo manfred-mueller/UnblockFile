@@ -1,14 +1,27 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace UnblockFile
+namespace Unblock
 {
     class Program
     {
+        // Import the GetFileAttributes function from kernel32.dll
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern uint GetFileAttributes(string lpFileName);
+
+        // Import the DeleteFile function from kernel32.dll
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool DeleteFile(string path);
+
+        // Constants for GetFileAttributes
+        private const uint INVALID_FILE_ATTRIBUTES = 0xFFFFFFFF;
+        private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
+
         static async Task Main(string[] args)
         {
             if (args.Length > 0)
@@ -46,45 +59,32 @@ namespace UnblockFile
             }
         }
 
-        static async Task UnblockFile(string filePath)
-        {
-            try
-            {
-                // Attempt to unblock the file
-                bool unblocked = await TryUnblockAsync(filePath);
-
-                if (unblocked)
-                {
-                    ShowBalloonTip(Properties.Resources.FileUnblocked, Properties.Resources.TheFileHasBeenSuccessfullyUnblocked, ToolTipIcon.Info);
-                }
-                else
-                {
-                    ShowBalloonTip(Properties.Resources.Error, Properties.Resources.FailedToUnblockTheFile, ToolTipIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowBalloonTip(Properties.Resources.Error, Properties.Resources.AnErrorOccurred + ex.Message, ToolTipIcon.Error);
-            }
-        }
-
         static async Task UnblockFilesInDirectory(string directoryPath)
         {
             int totalFiles = Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories).Length;
             int processedFiles = 0;
 
-            foreach (string filePath in Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories))
+            await Task.Run(() =>
+            {
+                RecursivelyUnblock(directoryPath, ref processedFiles, totalFiles);
+            });
+
+            if (processedFiles == totalFiles)
+            {
+                ShowBalloonTip(Properties.Resources.FileUnblocked, Properties.Resources.AllFilesHaveBeenSuccessfullyUnblocked, ToolTipIcon.Info);
+            }
+        }
+
+        static void RecursivelyUnblock(string directoryPath, ref int processedFiles, int totalFiles)
+        {
+            foreach (string filePath in Directory.GetFiles(directoryPath, "*", SearchOption.TopDirectoryOnly))
             {
                 try
                 {
-                    bool unblocked = await TryUnblockAsync(filePath);
+                    bool unblocked = TryUnblock(filePath);
                     if (unblocked)
                     {
                         processedFiles++;
-                        if (processedFiles == totalFiles)
-                        {
-                            ShowBalloonTip(Properties.Resources.FileUnblocked, Properties.Resources.TheFileHasBeenSuccessfullyUnblocked, ToolTipIcon.Info);
-                        }
                     }
                     else
                     {
@@ -96,18 +96,29 @@ namespace UnblockFile
                     ShowBalloonTip(Properties.Resources.Error, Properties.Resources.FailedToUnblockTheFile, ToolTipIcon.Error);
                 }
             }
+
+            foreach (string subdirectory in Directory.GetDirectories(directoryPath))
+            {
+                RecursivelyUnblock(subdirectory, ref processedFiles, totalFiles);
+            }
         }
 
-        static async Task<bool> TryUnblockAsync(string filePath)
+        static bool TryUnblock(string filePath)
         {
             try
             {
-                // Check if the file exists
                 if (File.Exists(filePath))
                 {
-                    // Remove Zone.Identifier alternate data stream
-                    await RemoveZoneIdentifierAsync(filePath);
-                    return true;
+                    if (IsFileBlocked(filePath))
+                    {
+                        UnblockFile(filePath).Wait(); // Synchronously wait for file unblocking
+                        return true;
+                    }
+                    else
+                    {
+                        ShowBalloonTip(Properties.Resources.Error, Properties.Resources.FileIsNotBlocked, ToolTipIcon.Error);
+                        return false;
+                    }
                 }
                 else
                 {
@@ -117,19 +128,46 @@ namespace UnblockFile
             }
             catch (UnauthorizedAccessException)
             {
-                // Insufficient permissions to unblock the file
+                ShowBalloonTip(Properties.Resources.Error, Properties.Resources.InsufficientPermissions, ToolTipIcon.Error);
                 return false;
             }
         }
 
-        static async Task RemoveZoneIdentifierAsync(string filePath)
+        static bool IsFileBlocked(string filePath)
         {
-            // Check if the file has Zone.Identifier alternate data stream
-            if (File.Exists(filePath + ":Zone.Identifier"))
+            string zoneIdentifierPath = filePath + ":Zone.Identifier";
+            uint fileAttributes = GetFileAttributes(zoneIdentifierPath);
+
+            return (fileAttributes != INVALID_FILE_ATTRIBUTES && (fileAttributes & FILE_ATTRIBUTE_NORMAL) == 0);
+        }
+
+        static async Task UnblockFile(string filePath)
+        {
+            if (!IsFileBlocked(filePath))
             {
-                // Delete the Zone.Identifier alternate data stream
-                await Task.Run(() => File.Delete(filePath + ":Zone.Identifier"));
+                ShowBalloonTip(Properties.Resources.Error, Properties.Resources.FileIsNotBlocked, ToolTipIcon.Error);
+                return;
             }
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    bool deleteSuccess = DeleteFile(filePath + ":Zone.Identifier");
+                    if (!deleteSuccess)
+                    {
+                        int errorCode = Marshal.GetLastWin32Error();
+                        if (errorCode != 2) // ERROR_FILE_NOT_FOUND
+                        {
+                            throw new System.ComponentModel.Win32Exception(errorCode);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Failed to delete Zone.Identifier for file {filePath}. Error: {ex.Message}");
+                }
+            });
         }
 
         static void ShowBalloonTip(string title, string message, ToolTipIcon icon)

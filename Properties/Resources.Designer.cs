@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UnblockFile.Properties {
+namespace Unblock.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace UnblockFile.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UnblockFile.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Unblock.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,15 @@ namespace UnblockFile.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die All files have been successfully unblocked ähnelt.
+        /// </summary>
+        internal static string AllFilesHaveBeenSuccessfullyUnblocked {
+            get {
+                return ResourceManager.GetString("AllFilesHaveBeenSuccessfullyUnblocked", resourceCulture);
             }
         }
         
@@ -88,6 +97,15 @@ namespace UnblockFile.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die File is not blocked ähnelt.
+        /// </summary>
+        internal static string FileIsNotBlocked {
+            get {
+                return ResourceManager.GetString("FileIsNotBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die File or folder not found ähnelt.
         /// </summary>
         internal static string FileOrFolderNotFound {
@@ -102,6 +120,15 @@ namespace UnblockFile.Properties {
         internal static string FileUnblocked {
             get {
                 return ResourceManager.GetString("FileUnblocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Insufficient permissions ähnelt.
+        /// </summary>
+        internal static string InsufficientPermissions {
+            get {
+                return ResourceManager.GetString("InsufficientPermissions", resourceCulture);
             }
         }
         

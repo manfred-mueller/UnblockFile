@@ -3,7 +3,7 @@
 
 #define MyAppName "UnblockFile"
 #define MyAppVersion "1.0.0"
-#define MyAppExeName MyAppName + ".exe"
+#define MyAppExeName "UnBlock.exe"
 #define MyAppPublisher "NASS e.K."
 #define MyAppURL "https://www.nass-ek.de"
 
@@ -23,7 +23,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile=D:\Dokumente\gpl_de.txt
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
-PrivilegesRequired=lowest
+PrivilegesRequired=admin
 OutputBaseFilename=UnblockFile_setup
 OutputDir=bin\Release
 SetupIconFile=D:\Bilder\nass-ek.ico
