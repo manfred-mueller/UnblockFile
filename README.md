@@ -1,6 +1,6 @@
 # UnblockFile
 
-![UnblockFile screenshot](Properties/screenshot.png?raw=true "UnblockFile screenshot")
+![UnblockFile screenshot](Properties/screenshot.png?raw=true "UnblockFile screenshot")[![Softpedia award](https://www.softpedia.com/_img/softpedia_100_free.png?2023_1)](https://www.softpedia.com/get/Tweak/Registry-Tweak/UnblockFile.shtml#status)
 
 Usage:&ensp;UnblockFile {file or path}<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&thinsp;UnblockFile {register}<br>
